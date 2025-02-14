@@ -1,0 +1,6 @@
+azure-ai-textanalytics
+azure-core
+black
+pylint
+python-dotenv
+pytest
