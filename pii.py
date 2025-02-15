@@ -10,7 +10,10 @@ load_dotenv()
 language_key = os.getenv("LANGUAGE_KEY")
 language_endpoint = os.getenv("LANGUAGE_ENDPOINT")
 
-client_subscription = TextAnalyticsClient(language_endpoint, AzureKeyCredential(language_key))
+client_subscription = TextAnalyticsClient(
+    language_endpoint, AzureKeyCredential(language_key)
+)
+
 
 # create function to recognize pii entities
 def recognize_pii_entities_from_list(client, documents):
@@ -26,10 +29,11 @@ def recognize_pii_entities_from_list(client, documents):
             print("Offset: {}".format(entity.offset))
             print("Length: {}".format(entity.length))
             print("")
-            
-#create function to recognize pii entities from a file txt
+
+
+# create function to recognize pii entities from a file txt
 def recognize_pii_entities_from_file(client, file_path):
-    with open(file_path, "r") as file:
+    with open(file_path, "r", encoding="utf-8") as file:
         documents = file.readlines()
     documents = [doc.strip() for doc in documents]
     recognize_pii_entities_from_list(client, documents)
@@ -43,5 +47,6 @@ documents_sample = [
     "Mi nombre es Alvaro y tengo 25 años",
 ]
 
-#recognize_pii_entities_from_list(client_subscription, documents_sample)
+# recognize_pii_entities_from_list(client_subscription, documents_sample)
+
 recognize_pii_entities_from_file(client_subscription, "biography.txt")
