@@ -1,4 +1,5 @@
 azure-ai-textanalytics
+azure-ai-translation-text
 azure-core
 black
 pylint

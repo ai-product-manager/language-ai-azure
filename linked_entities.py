@@ -15,11 +15,12 @@ client_subscription = TextAnalyticsClient(
     language_endpoint, AzureKeyCredential(language_key)
 )
 
-#create function to recognize linked entities
+
+# create function to recognize linked entities
 def recognize_linked_entities_from_list(client, documents):
     try:
         result = client.recognize_linked_entities(documents, language="es")[0]
-        
+
         print("Linked Entities:")
         for entity in result.entities:
             print("\tName:", entity.name)
@@ -34,12 +35,12 @@ def recognize_linked_entities_from_list(client, documents):
                 print("\t\t", "\tLength:", match.length)
     except HttpResponseError as err:
         print("Encountered HTTP response error. {}".format(err))
-    except Exception as err:
+    except Exception as err:  # pylint: disable=broad-exception-caught
         print("Encountered exception. {}".format(err))
-        
+
+
 documents_sample = [
     "Microsoft fue fundado por Bill Gates y Paul Allen en 1975. La sede de Microsoft se encuentra en Redmond, Washington. En 1975, Bill Gates y Paul Allen fundaron Microsoft en Redmond, Washington. La empresa se trasladó a Seattle, Washington y a Silicon Valley, California."
 ]
 
 recognize_linked_entities_from_list(client_subscription, documents_sample)
-        

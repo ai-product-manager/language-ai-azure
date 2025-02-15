@@ -15,22 +15,26 @@ client_subscription = TextAnalyticsClient(
     language_endpoint, AzureKeyCredential(language_key)
 )
 
+
 def get_sentiments_from_documents(client, documents):
     try:
         result = client.analyze_sentiment(documents, show_opinion_mining=True)
         docs = [doc for doc in result if not doc.is_error]
-        
+
         for idx, doc in enumerate(docs):
             print(f"Text: {documents[idx]}")
             print(f"Global sentiment: {doc.sentiment}")
-        
+
     except HttpResponseError as err:
         print("Encountered HTTP response error. {}".format(err))
-    except Exception as err:
-        print("Encountered exception. {}".format(err))   
-        
-documents_sample = ["Tuve el mejor día de mi vida. Decidó hacer paracaidisimo y me hizo apreciar toda mi vida.",
-                    "Esto fue una perdida de tiempo. Todas las vistas de este descenso son extremadamente aburridas",
-                    "Solo tengo una palabra para mi experiecnia ¡WOW!"]
+    except Exception as err:  # pylint: disable=broad-exception-caught
+        print("Encountered exception. {}".format(err))
+
+
+documents_sample = [
+    "Tuve el mejor día de mi vida. Decidó hacer paracaidisimo y me hizo apreciar toda mi vida.",
+    "Esto fue una perdida de tiempo. Todas las vistas de este descenso son extremadamente aburridas",
+    "Solo tengo una palabra para mi experiecnia ¡WOW!",
+]
 
 get_sentiments_from_documents(client_subscription, documents_sample)

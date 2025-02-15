@@ -25,7 +25,7 @@ def get_key_phrases_from_list(client, documents):
             print("\t", phrase)
     except HttpResponseError as err:
         print("Encountered HTTP response error. {}".format(err))
-    except Exception as err:
+    except Exception as err:  # pylint: disable=broad-exception-caught
         print("Encountered exception. {}".format(err))
 
 

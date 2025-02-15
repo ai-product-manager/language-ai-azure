@@ -15,17 +15,25 @@ client_subscription = TextAnalyticsClient(
     language_endpoint, AzureKeyCredential(language_key)
 )
 
+
 def get_sentiments_from_documents(client: TextAnalyticsClient, documents):
     try:
-        response = client.detect_language(documents, country_hint='cn')
+        response = client.detect_language(documents, country_hint="cn")
         for idx, response in enumerate(response):
-            print("Document: {} | Detected language: {}".format(documents[idx], response.primary_language.name))
+            print(
+                "Document: {} | Detected language: {}".format(
+                    documents[idx], response.primary_language.name
+                )
+            )
     except HttpResponseError as err:
         print("Encountered HTTP response error. {}".format(err))
-    except Exception as err:
-        print("Encountered exception. {}".format(err)) 
-        
-documents_sample = ["这是法语和中文的文本",
-                    "Ceci est un texte en français et en chinois"]
+    except Exception as err:  # pylint: disable=broad-exception-caught
+        print("Encountered exception. {}".format(err))
 
-get_sentiments_from_documents(client_subscription,documents_sample)
+
+documents_sample = [
+    "这是法语和中文的文本",
+    "Ceci est un texte en français et en chinois",
+]
+
+get_sentiments_from_documents(client_subscription, documents_sample)

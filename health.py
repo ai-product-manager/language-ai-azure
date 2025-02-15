@@ -15,11 +15,14 @@ client_subscription = TextAnalyticsClient(
     language_endpoint, AzureKeyCredential(language_key)
 )
 
-#create function to recognize health entities
+
+# create function to recognize health entities
 def recognize_health_entities_from_list(client, documents):
     try:
-        result = client.begin_analyze_healthcare_entities(documents, show_stats=True).result()
-        
+        result = client.begin_analyze_healthcare_entities(
+            documents, show_stats=True
+        ).result()
+
         docs = [doc for doc in result if not doc.is_error]
         for idx, doc in enumerate(docs):
             print("Document #{} has the following healthcare entities:".format(idx))
@@ -35,13 +38,18 @@ def recognize_health_entities_from_list(client, documents):
                 print("Relation:")
                 print("\tRelation Type: {}".format(relation.relation_type))
                 for role in relation.roles:
-                    print("\tRole: {} with entity {}".format(role.name, role.entity.text))
+                    print(
+                        "\tRole: {} with entity {}".format(role.name, role.entity.text)
+                    )
     except HttpResponseError as err:
         print("Encountered HTTP response error. {}".format(err))
-    except Exception as err:
+    except Exception as err:  # pylint: disable=broad-exception-caught
         print("Encountered exception. {}".format(err))
-        
-documents_sample = ["Paciente necesita ibuprofeno de 50mg para el dolor de cabeza",
-                    "Mujer embarazada con presión 170 sobre 100, administrado metildopa 500 cada 4 horas"]
+
+
+documents_sample = [
+    "Paciente necesita ibuprofeno de 50mg para el dolor de cabeza",
+    "Mujer embarazada con presión 170 sobre 100, administrado metildopa 500 cada 4 horas",
+]
 
 recognize_health_entities_from_list(client_subscription, documents_sample)
